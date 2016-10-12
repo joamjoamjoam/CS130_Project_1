@@ -35,11 +35,11 @@ If you need help getting started, I suggest you do the following:
 
 1. Get the mglBegin(), mglEnd(), and mglVertex3() calls working first. Make mglReadPixels draw the vertices in the output so you can verify that they are where they should be.
 
-2.Once the pixels are in the right places, modify mglReadPixels to rasterize each element.
+2. Once the pixels are in the right places, modify mglReadPixels to rasterize each element.
 
-3.Fine-tune the placement of your pixels. The -d option will be very helpful here.
+3. Fine-tune the placement of your pixels. The -d option will be very helpful here.
 
-4.Go through the list of inputs one at a time, implementing features as they are needed and fixing bugs as you encounter them. The tests are roughly arranged from easy to hard and are intended to assist you in debugging your program.
+4. Go through the list of inputs one at a time, implementing features as they are needed and fixing bugs as you encounter them. The tests are roughly arranged from easy to hard and are intended to assist you in debugging your program.
 
 5. If you fail a test, try pruning down the test by removing or simplifying commands in the test file to get the simplest test case that you still fail. Simpler examples tend to be easier to debug.
 
