@@ -52,11 +52,11 @@ Along with the same code is included 25 test cases. Each test case contains a li
 Tests |	Points | Error limit | Time limit | Purpose |	Notes |
 -------|--------|-------------|------------|---------|-------|
 00 |	10 |	1.00% |	1000ms |	Basic rasterization |	Basic stuff is worth a lot of the points | 
-01-04 |	5 (each) | 1.00% | 1000ms |	Transforms, basic features |	Each test is 5 points; 20 points total | 
-05-23 |	1 (each) | 1.00% | 1000ms |	Remaining features and commands |	Each test is 1 point; 19 points total | 
-00-23 |	1 (total) | 0.20% | 1000ms |	Pixel placement accuracy |	All tests must be within this limit to get the point. | 
-00-23 |	1 (total) | 0.05% | 1000ms |	Pixel placement accuracy |	Only 15 tests must be within this limit to get the point. | 
-00-23 |	1 (total) | 1.00% | 10ms |	Efficiency and optimization |	All tests must be within this limit to get the point. |
+01-04  |	5 (each) | 1.00% | 1000ms |	Transforms, basic features |	Each test is 5 points; 20 points total | 
+05-23  |	1 (each) | 1.00% | 1000ms |	Remaining features and commands |	Each test is 1 point; 19 points total | 
+00-23  |	1 (total) | 0.20% | 1000ms |	Pixel placement accuracy |	All tests must be within this limit to get the point. | 
+00-23  |	1 (total) | 0.05% | 1000ms |	Pixel placement accuracy |	Only 15 tests must be within this limit to get the point. | 
+00-23  |	1 (total) | 1.00% | 10ms |	Efficiency and optimization |	All tests must be within this limit to get the point. |
 24 |	1 |	8.00% |	5000ms |	Scaling, stress test |	Note that more error and time is allowed. |
 25 |	1 |	1.00% |	1000ms |	Bug test |	Clipping before leaving homogeneous coordinates. |
 24 |	1 |	4.00% |	5000ms |	Pixel placement accuracy | None. |
