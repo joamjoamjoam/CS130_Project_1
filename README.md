@@ -49,8 +49,8 @@ If you need help getting started, I suggest you do the following:
 
 Along with the same code is included 25 test cases. Each test case contains a list of commands, which are the OpenGL functions that will be called and the arguments that they will be given. The grading is automated, so you will be able to determine what your score will be before you turn it in. Errors are determined by running with the -d option, and timings are determined by running with the -t option. Both runtime and error will be measured on the delta lab machines (delta-01.cs.ucr.edu, etc.) Here is how your grade will be computed:
 
-Tests |	Points | Error limit | Time limit | Purpose |	Notes |
--------|--------|-------------|------------|---------|-------|
+Tests     | Points | Error limit | Time limit | Purpose | Notes |
+----------|--------|-------------|------------|---------|-------|
 00 |	10 |	1.00% |	1000ms |	Basic rasterization |	Basic stuff is worth a lot of the points | 
 01-04  |	5 (each) | 1.00% | 1000ms |	Transforms, basic features |	Each test is 5 points; 20 points total | 
 05-23  |	1 (each) | 1.00% | 1000ms |	Remaining features and commands |	Each test is 1 point; 19 points total | 
