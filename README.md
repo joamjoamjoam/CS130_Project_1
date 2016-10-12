@@ -4,7 +4,7 @@ In this assignment, you will be implementing a simplified 3D rendering pipeline 
 
 1. Vertex and viewing transformations
 2. Rasterization
-3.Using a z-buffer for hidden surfaces
+3. Using a z-buffer for hidden surfaces
 
 ##Code
 
