@@ -49,23 +49,23 @@ If you need help getting started, I suggest you do the following:
 
 Along with the same code is included 25 test cases. Each test case contains a list of commands, which are the OpenGL functions that will be called and the arguments that they will be given. The grading is automated, so you will be able to determine what your score will be before you turn it in. Errors are determined by running with the -d option, and timings are determined by running with the -t option. Both runtime and error will be measured on the delta lab machines (delta-01.cs.ucr.edu, etc.) Here is how your grade will be computed:
 
-Tests|	Points|	Error| limit|	Time limit|	Purpose|	Notes|
-00|	10|	1.00%|	1000ms|	Basic rasterization|	Basic stuff is worth a lot of the points| 
-01-04|	5 (each)| 1.00%|1000ms|	Transforms, basic features|	Each test is 5 points; 20 points total| 
-05-23|	1 (each)| 1.00%|1000ms|	Remaining features and commands|	Each test is 1 point; 19 points total| 
-00-23|	1 (total)| 0.20%|1000ms|	Pixel placement accuracy|	All tests must be within this limit to get the point.| 
-00-23|	1 (total)| 0.05%|1000ms|	Pixel placement accuracy|	Only 15 tests must be within this limit to get the point.| 
-00-23|	1 (total)| 1.00%|10ms|	Efficiency and optimization|	All tests must be within this limit to get the point.|
-24|	1|	8.00%|	5000ms|	Scaling, stress test|	Note that more error and time is allowed.|
-25|	1|	1.00%|	1000ms|	Bug test|	Clipping before leaving homogeneous coordinates.|
-24|	1|	4.00%|	5000ms|	Pixel placement accuracy| None.|
-24|	1|	2.00%|	5000ms|	Pixel placement accuracy| None.|	
-24|	1|	1.00%|	5000ms|	Pixel placement accuracy| None.|	
-24|	1|	8.00%|	100ms|	Efficiency and optimization| None.| 
-24|	1|	8.00%|	30ms|	Efficiency and optimization| None.|	
-24|	1|	8.00%|	15ms|	Efficiency and optimization| None.|	
-26|	1|	1.00%|	1000ms|	Bug test|	Projection correct interpolation.| 
-27|	1|	1.00%|	1000ms|	Bug test|	Interpolation and z buffering.|
+Tests |	Points |	Error | limit |	Time limit |	Purpose |	Notes |
+00 |	10 |	1.00% |	1000ms |	Basic rasterization |	Basic stuff is worth a lot of the points | 
+01-04 |	5 (each) | 1.00% | 1000ms |	Transforms, basic features |	Each test is 5 points; 20 points total | 
+05-23 |	1 (each) | 1.00% | 1000ms |	Remaining features and commands |	Each test is 1 point; 19 points total | 
+00-23 |	1 (total) | 0.20% | 1000ms |	Pixel placement accuracy |	All tests must be within this limit to get the point. | 
+00-23 |	1 (total) | 0.05% | 1000ms |	Pixel placement accuracy |	Only 15 tests must be within this limit to get the point. | 
+00-23 |	1 (total) | 1.00% | 10ms |	Efficiency and optimization |	All tests must be within this limit to get the point. |
+24 |	1 |	8.00% |	5000ms |	Scaling, stress test |	Note that more error and time is allowed. |
+25 |	1 |	1.00% |	1000ms |	Bug test |	Clipping before leaving homogeneous coordinates. |
+24 |	1 |	4.00% |	5000ms |	Pixel placement accuracy | None. |
+24 |	1 |	2.00% |	5000ms |	Pixel placement accuracy | None. |	
+24 |	1 |	1.00% |	5000ms |	Pixel placement accuracy | None. |	
+24 |	1 |	8.00% |	100ms |	Efficiency and optimization | None. | 
+24 |	1 |	8.00% |	30ms |	Efficiency and optimization | None. |	
+24 |	1 |	8.00% |	15ms |	Efficiency and optimization | None. |	
+26 |	1 |	1.00% |	1000ms |	Bug test |	Projection correct interpolation. | 
+27 |	1 |	1.00% |	1000ms |	Bug test |	Interpolation and z buffering. |
 
 The project will be graded out of 50 points. The maximum number of points possible is 62; 12 points of extra credit are possible. Implementing enough to pass the first five tests suffices for half of the points. The tests generally fall into one of three types: correctness, accuracy, and efficiency. Correctness tests check that the functionally is implemented and works. Accuracy tests check to see that pixels are being drawn where they should be (rather than off by one pixel or even a fraction of a pixel). Some deviation from the OpenGL implementation is to be expected, but you should be able to get very close. Efficiency tests encourage you to implement various optimizations, such as geometric clipping and incremental computation. It does not matter which if any optimizations you implement; if your code is efficient enough, you get the points.
 
