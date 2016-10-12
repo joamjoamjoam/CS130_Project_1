@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>CS130 ((Fall 2016)) : Project 1 : Simplified rendering pipeline</title>
+  </head>
+  <body>
+    
+    <h4>Overview</h4>
+
+    <p>
+      In this assignment, you will be implementing a simplified 3D rendering pipeline (with flat shading).  This will consist of several parts:
+    </p>
+    <ol>
+      <li>Vertex and viewing transformations</li>
+      <li>Rasterization</li>
+      <li>Using a z-buffer for hidden surfaces</li>
+    </ol>
+
+    <h4>Code</h4>
+
+    <p>
+      Skeleton code is available <b><a href="files/proj-01-files.tar.gz">here</a></b>.
+    </p>
+
+    <h4>Submission Instructions</h4>
+
+    <p>
+      Deadline TBD.<br/>
+      Your assignment is to implement the functions in minigl.cpp.
+      Submit your minigl.cpp file on iLearn.
+    </p>
+
+    <h4>Software Framebuffer</h4>
+
+    <p>
+      You will have a software framebuffer that stores both a 2D array of pixel colors and a 2D array of z (depth) values.
+      Your rasterization routine will write into this software framebuffer.
+    </p>
+
+    <h4>Rasterization and z-buffer depth test</h4>
+
+    <p>
+      Implement a routine that draws a filled triangle specified by three 
+      vertices into your software framebuffer. The routine should write its 
+      result to the software framebuffer, doing the appropriate z-buffer 
+      check.
+    </p>
+
+    <h4>Vertex and viewing transformations</h4>
+
+    <p>
+      Similar to OpenGL, you will maintain both a projection matrix stack and a
+      modelview stack.
+    </p>
+
+    <p>
+      When the user draws a vertex you will apply the modelview and projection
+      ( projection * (modelview * vertex) ) to obtain
+      the transformed geometry. This is followed by a divide by w, and a 
+      viewport transform.  You will then store this transformed geometry for 
+      rasterization.  The reason for this is that
+      the transformations are part of the current state and will not 
+      necessarily persist.
+    </p>
+
+
+    <h4> Getting Started </h4>
+
+    <p>
+      If you need help getting started, I suggest you do the following:
+    </p>
+
+    <ol>
+      <li>Get the <b>mglBegin()</b>, <b>mglEnd()</b>, and <b>mglVertex3()</b> calls working first.  Make <b>mglReadPixels</b> draw the vertices in the output so you can verify that they are where they should be.</li>
+      <li>Once the pixels are in the right places, modify <b>mglReadPixels</b> to rasterize each element.</li>
+      <li>Fine-tune the placement of your pixels.  The <b>-d</b> option will be very helpful here.</li>
+      <li>Go through the list of inputs one at a time, implementing features as they are needed and fixing bugs as you encounter them.  The tests are roughly arranged from easy to hard and are intended to assist you in debugging your program.</li>
+      <li>If you fail a test, try pruning down the test by removing or simplifying commands in the test file to get the simplest test case that you still fail.  Simpler examples tend to be easier to debug.</li>
+      <li>Each function that you are expected to write in miniGL corresponds to an appropriate OpenGL command. I strongly recommend you look at <b><a href="https://www.opengl.org/sdk/docs/man2/">this</a></b> before implementing the appropriate functions.</li>
+    </ol>
+
+    <h4> Grading </h4>
+
+    <p>
+      Along with the same code is included 25 test cases.
+      Each test case contains a list of commands, which are the OpenGL functions that will be called and the arguments that they will be given.
+      The grading is automated, so you will be able to determine what your score will be before you turn it in.
+      Errors are determined by running with the <b>-d</b> option, and timings are determined by running with the <b>-t</b> option.
+      Both runtime and error will be measured on the delta lab machines (delta-01.cs.ucr.edu, etc.)
+      Here is how your grade will be computed:
+    </p>
+
+    <table>
+      <tr><td>Tests</td><td>Points</td><td>Error limit</td><td>Time limit</td><td>Purpose</td><td>Notes</td></tr>
+      <tr><td>00</td><td>10</td><td>1.00%</td><td>1000ms</td><td>Basic rasterization</td><td>Basic stuff is worth a lot of the points</td></tr>
+      <tr><td>01-04</td><td>5 (each)</td><td>1.00%</td><td>1000ms</td><td>Transforms, basic features</td><td>Each test is 5 points; 20 points total</td></tr>
+      <tr><td>05-23</td><td>1 (each)</td><td>1.00%</td><td>1000ms</td><td>Remaining features and commands</td><td>Each test is 1 point; 19 points total</td></tr>
+      <tr><td>00-23</td><td>1 (total)</td><td>0.20%</td><td>1000ms</td><td>Pixel placement accuracy</td><td>All tests must be within this limit to get the point.</td></tr>
+      <tr><td>00-23</td><td>1 (total)</td><td>0.05%</td><td>1000ms</td><td>Pixel placement accuracy</td><td>Only 15 tests must be within this limit to get the point.</td></tr>
+      <tr><td>00-23</td><td>1 (total)</td><td>1.00%</td><td>10ms</td><td>Efficiency and optimization</td><td>All tests must be within this limit to get the point.</td></tr>
+      <tr><td>24</td><td>1</td><td>8.00%</td><td>5000ms</td><td>Scaling, stress test</td><td>Note that more error and time is allowed.</td></tr>
+      <tr><td>25</td><td>1</td><td>1.00%</td><td>1000ms</td><td>Bug test</td><td>Clipping before leaving homogeneous coordinates.</td></tr>
+      <tr><td>24</td><td>1</td><td>4.00%</td><td>5000ms</td><td>Pixel placement accuracy</td><td></td></tr>
+      <tr><td>24</td><td>1</td><td>2.00%</td><td>5000ms</td><td>Pixel placement accuracy</td><td></td></tr>
+      <tr><td>24</td><td>1</td><td>1.00%</td><td>5000ms</td><td>Pixel placement accuracy</td><td></td></tr>
+      <tr><td>24</td><td>1</td><td>8.00%</td><td>100ms</td><td>Efficiency and optimization</td><td></td></tr>
+      <tr><td>24</td><td>1</td><td>8.00%</td><td>30ms</td><td>Efficiency and optimization</td><td></td></tr>
+      <tr><td>24</td><td>1</td><td>8.00%</td><td>15ms</td><td>Efficiency and optimization</td><td></td></tr>
+      <tr><td>26</td><td>1</td><td>1.00%</td><td>1000ms</td><td>Bug test</td><td>Projection correct interpolation.</td></tr>
+      <tr><td>27</td><td>1</td><td>1.00%</td><td>1000ms</td><td>Bug test</td><td>Interpolation and z buffering.</td></tr>
+    </table>
+
+    <p>
+      The project will be graded out of 50 points.
+      The maximum number of points possible is 62; 12 points of extra credit are possible.
+      Implementing enough to pass the first five tests suffices for half of the points.
+      The tests generally fall into one of three types: correctness, accuracy, and efficiency.
+      Correctness tests check that the functionally is implemented and works.
+      Accuracy tests check to see that pixels are being drawn where they should be (rather than off by one pixel or even a fraction of a pixel).
+      Some deviation from the OpenGL implementation is to be expected, but you should be able to get very close.
+      Efficiency tests encourage you to implement various optimizations, such as geometric clipping and incremental computation.
+      It does not matter which if any optimizations you implement; if your code is efficient enough, you get the points.
+    </p>
+
+    <h4>Grading script</h4>
+
+    <p>
+      We are providing you with the grading script that we will be using to grade this project.
+      You can run it like this: "<code>./grading-script.sh . grading-scheme.txt</code>".
+      This will automatically compile your code, run all of the tests in the table above, and compute your score based on the point values in the table.
+      This means you can run it yourself to see your progress.
+      You can also run it before you submit your project so that you know what your score will be before you submit it.
+    </p>
+
+    <p>
+      Note that scores can vary from run to run due to hardware and natural variability.
+      For example, if run on a machine slower than delta-01, you may see a lower score by failing some of the efficiency tests that would pass on delta-01.
+      Some runs will be slightly faster and some slightly slower; if you are very close to the time limit on a test, it may pass sometimes and fail others.
+      To give you the benefit of the doubt with timing variability, timing tests are automatically run three times each (or until you pass).
+      If any of the three runs is within the time limit, you will get credit for passing the test.
+    </p>
+
+    <p>
+      <b>Be sure to test your project on one of the delta machines.</b>
+      All of the delta machines are identical in hardware and software; if it works on one, it should work on all.
+      It is possible for your project to score well on your own machine but fail on delta-01.
+      For example, the version of the compiler on your machine may accept your code while the version on delta may flag a compilation error and fail.
+    </p>
+    
+    <h4>Checkpoints</h4>
+
+    <p>
+      This project has two checkpoints.
+      These are milestones to encourage you to start your project early.
+      At each checkpoint, you will submit your project just as you would when it is due.
+      At the first checkpoint, your program will be graded out of 20 points.
+      At the second checkpoint, your program will be graded out of 35 points.
+      No extra credit is possible at checkpoints.
+      When your project is due, it will be graded out of 50 points, and extra credit will be given for scores higher than that.
+    </p>
+    
+  </body>
+</html>
