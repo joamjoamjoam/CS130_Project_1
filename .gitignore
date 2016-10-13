@@ -1,2 +1,5 @@
-grading
-
+grading/
+*.d 
+*~ 
+*.bak 
+minigl
