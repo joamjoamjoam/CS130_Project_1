@@ -11,6 +11,7 @@
  */
 
 #include "minigl.h"
+#include <iostream>
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -55,7 +56,7 @@ void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
  * whose type is specified by the given mode.
  */
 void mglBegin(MGLpoly_mode mode){
-    switch (MGLpoly_mode){
+    switch (mode){
         case MGL_TRIANGLES:
             cout << "Triangle Mode" << endl;
             break;
