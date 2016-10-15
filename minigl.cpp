@@ -16,6 +16,7 @@
 #include <cassert>
 #include <cmath>
 #include <vector>
+#include <list>
 #include <cstdio>
 
 using namespace std;
@@ -28,6 +29,27 @@ inline void MGL_ERROR(const char* description) {
     printf("%s\n", description);
     exit(1);
 }
+class vec3{
+public:
+    int x;
+    int y;
+    int z;
+    
+private:
+    
+};
+
+std::ostream &operator<<(std::ostream &os, vec3 const &m) {
+    return os << "V(x,y,z) = (" << x << "," << y << ",'" << z << ")";
+}
+
+
+
+// My Useful Globals
+MGLpoly_mode* currentDrawingMode;
+//vec3 gloablVertexList[1000];
+list<vec3> gloablVertexList;
+
 
 
 /**
@@ -59,9 +81,12 @@ void mglBegin(MGLpoly_mode mode){
     switch (mode){
         case MGL_TRIANGLES:
             cout << "Triangle Mode" << endl;
+            // expect to start drawing a triangle
+            currentDrawingMode = MGL_TRIANGLES;
             break;
         case MGL_QUADS:
             cout << "Quads Mode"  << endl;
+            currentDrawingMode = MGL_QUADS;
     }
 }
 
@@ -89,7 +114,16 @@ void mglVertex2(MGLfloat x, MGLfloat y){
  * calls to mglBegin() and mglEnd().
  */
 void mglVertex3(MGLfloat x, MGLfloat y, MGLfloat z){
+    // should just add a vertex to global list here
+    vec3 tmp;
+    tmp.x = x;
+    tmp.y = y;
+    tmp.z = z;
+    gloablVertexList.push_back(tmp);
     
+    
+    
+    cout << "Vector " << gloablVertexList.back() << "was added." << endl;
 }
 
 /**
