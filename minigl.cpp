@@ -44,6 +44,8 @@ inline void MGL_ERROR(const char* description) {
 void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
     
     
+    
+    
 }
 
 
@@ -53,7 +55,13 @@ void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
  * whose type is specified by the given mode.
  */
 void mglBegin(MGLpoly_mode mode){
-
+    switch (MGLpoly_mode){
+        case MGL_TRIANGLES:
+            cout << "Triangle Mode" << endl;
+            break;
+        case MGL_QUADS:
+            cout << "Quads Mode" << end;
+    }
 }
 
 
