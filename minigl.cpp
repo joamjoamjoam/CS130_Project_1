@@ -41,27 +41,29 @@ inline void MGL_ERROR(const char* description) {
  * with the actual pixel values that should be displayed on
  * the two-dimensional screen.
  */
-void mglReadPixels(MGLsize width,
-                   MGLsize height,
-                   MGLpixel *data)
-{
+void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
+    
+    
 }
+
+
 
 /**
  * Start specifying the vertices for a group of primitives,
  * whose type is specified by the given mode.
  */
-void mglBegin(MGLpoly_mode mode)
-{
+void mglBegin(MGLpoly_mode mode){
+
 }
 
 
 /**
  * Stop specifying the vertices for a group of primitives.
  */
-void mglEnd()
-{
+void mglEnd(){
+    
 }
+
 
 /**
  * Specify a two-dimensional vertex; the x- and y-coordinates
@@ -69,49 +71,46 @@ void mglEnd()
  * to be zero.  Must appear between calls to mglBegin() and
  * mglEnd().
  */
-void mglVertex2(MGLfloat x,
-                MGLfloat y)
-{
+void mglVertex2(MGLfloat x, MGLfloat y){
+    
 }
 
 /**
  * Specify a three-dimensional vertex.  Must appear between
  * calls to mglBegin() and mglEnd().
  */
-void mglVertex3(MGLfloat x,
-                MGLfloat y,
-                MGLfloat z)
-{
+void mglVertex3(MGLfloat x, MGLfloat y, MGLfloat z){
+    
 }
 
 /**
  * Set the current matrix mode (modelview or projection).
  */
-void mglMatrixMode(MGLmatrix_mode mode)
-{
+void mglMatrixMode(MGLmatrix_mode mode){
+    
 }
 
 /**
  * Push a copy of the current matrix onto the stack for the
  * current matrix mode.
  */
-void mglPushMatrix()
-{
+void mglPushMatrix(){
+    
 }
 
 /**
  * Pop the top matrix from the stack for the current matrix
  * mode.
  */
-void mglPopMatrix()
-{
+void mglPopMatrix(){
+    
 }
 
 /**
  * Replace the current matrix with the identity.
  */
-void mglLoadIdentity()
-{
+void mglLoadIdentity(){
+    
 }
 
 /**
@@ -126,8 +125,8 @@ void mglLoadIdentity()
  *
  * where ai is the i'th entry of the array.
  */
-void mglLoadMatrix(const MGLfloat *matrix)
-{
+void mglLoadMatrix(const MGLfloat *matrix){
+    
 }
 
 /**
@@ -142,18 +141,16 @@ void mglLoadMatrix(const MGLfloat *matrix)
  *
  * where ai is the i'th entry of the array.
  */
-void mglMultMatrix(const MGLfloat *matrix)
-{
+void mglMultMatrix(const MGLfloat *matrix){
+    
 }
 
 /**
  * Multiply the current matrix by the translation matrix
  * for the translation vector given by (x, y, z).
  */
-void mglTranslate(MGLfloat x,
-                  MGLfloat y,
-                  MGLfloat z)
-{
+void mglTranslate(MGLfloat x, MGLfloat y, MGLfloat z){
+    
 }
 
 /**
@@ -161,54 +158,37 @@ void mglTranslate(MGLfloat x,
  * for a rotation of (angle) degrees about the vector
  * from the origin to the point (x, y, z).
  */
-void mglRotate(MGLfloat angle,
-               MGLfloat x,
-               MGLfloat y,
-               MGLfloat z)
-{
+void mglRotate(MGLfloat angle, MGLfloat x, MGLfloat y, MGLfloat z){
+    
 }
 
 /**
  * Multiply the current matrix by the scale matrix
  * for the given scale factors.
  */
-void mglScale(MGLfloat x,
-              MGLfloat y,
-              MGLfloat z)
-{
+void mglScale(MGLfloat x, MGLfloat y, MGLfloat z){
+    
 }
 
 /**
  * Multiply the current matrix by the perspective matrix
  * with the given clipping plane coordinates.
  */
-void mglFrustum(MGLfloat left,
-                MGLfloat right,
-                MGLfloat bottom,
-                MGLfloat top,
-                MGLfloat near,
-                MGLfloat far)
-{
+void mglFrustum(MGLfloat left, MGLfloat right, MGLfloat bottom, MGLfloat top, MGLfloat near, MGLfloat far){
+    
 }
 
 /**
  * Multiply the current matrix by the orthographic matrix
  * with the given clipping plane coordinates.
  */
-void mglOrtho(MGLfloat left,
-              MGLfloat right,
-              MGLfloat bottom,
-              MGLfloat top,
-              MGLfloat near,
-              MGLfloat far)
-{
+void mglOrtho(MGLfloat left, MGLfloat right, MGLfloat bottom, MGLfloat top, MGLfloat near, MGLfloat far){
+    
 }
 
 /**
  * Set the current color for drawn shapes.
  */
-void mglColor(MGLfloat red,
-              MGLfloat green,
-              MGLfloat blue)
-{
+void mglColor(MGLfloat red, MGLfloat green, MGLfloat blue){
+    
 }
