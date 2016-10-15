@@ -61,7 +61,7 @@ void mglBegin(MGLpoly_mode mode){
             cout << "Triangle Mode" << endl;
             break;
         case MGL_QUADS:
-            cout << "Quads Mode"  << end;
+            cout << "Quads Mode"  << endl;
     }
 }
 
