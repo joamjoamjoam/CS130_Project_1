@@ -86,9 +86,14 @@ void Execute_Commands()
 
     MGLpixel pixel_data[width*height];
     for(int i=0;i<width*height;i++) pixel_data[i]=0;
-
+    
     mglReadPixels(width,height,pixel_data);
+    
+    // my code erase this
+    std::cout << "Pixel Data 0 is " << pixel_data[0] << std::endl;
 
+   //----------------------------------------------------------------------
+    
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();

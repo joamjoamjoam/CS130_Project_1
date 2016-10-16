@@ -31,25 +31,28 @@ inline void MGL_ERROR(const char* description) {
 }
 class vec3{
 public:
-    int x;
-    int y;
-    int z;
+    MGLfloat x;
+    MGLfloat y;
+    MGLfloat z;
     
 private:
     
 };
 
-std::ostream &operator<<(std::ostream &os, vec3 const &m) {
-    return os << "V(x,y,z) = (" << x << "," << y << ",'" << z << ")";
+std::ostream &operator<<(std::ostream &os, vec3 const &v) {
+    return os << "V(x,y,z) = (" << v.x << "," << v.y << "," << v.z << ")";
 }
 
 
 
 // My Useful Globals
-MGLpoly_mode* currentDrawingMode;
+MGLpoly_mode currentDrawingMode;
+int W = 320;
+int H = 240;
 //vec3 gloablVertexList[1000];
 list<vec3> gloablVertexList;
 
+MGLpixel currentPixelFramebuffer[320*240];
 
 
 /**
@@ -66,8 +69,8 @@ list<vec3> gloablVertexList;
  */
 void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
     
-    
-    
+    currentPixelFramebuffer[0] = 1;
+    copy(currentPixelFramebuffer, currentPixelFramebuffer+(W*H), data);
     
 }
 
@@ -95,7 +98,19 @@ void mglBegin(MGLpoly_mode mode){
  * Stop specifying the vertices for a group of primitives.
  */
 void mglEnd(){
-    
+    switch (currentDrawingMode) {
+        case MGL_TRIANGLES:
+            cout << "Triangles End" << endl;
+            
+            break;
+        
+        case MGL_QUADS:
+            cout << "Quads End" << endl;
+            break;
+            
+        default:
+            break;
+    }
 }
 
 
@@ -106,7 +121,16 @@ void mglEnd(){
  * mglEnd().
  */
 void mglVertex2(MGLfloat x, MGLfloat y){
+    // should just add a vertex to global list here
+    vec3 tmp;
+    tmp.x = x;
+    tmp.y = y;
+    tmp.z = 0;
+    gloablVertexList.push_back(tmp);
     
+    
+    
+    cout << "Vector " << gloablVertexList.back() << "was added." << endl;
 }
 
 /**
