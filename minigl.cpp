@@ -21,6 +21,11 @@
 
 using namespace std;
 
+/*
+ To Do list 
+ 1. plot verticies correctly by apping pixel locations to an xy coordinate system eg 10 pixels wide = 1 x unit
+ 
+*/
 
 /**
  * Standard macro to report errors
@@ -47,12 +52,15 @@ std::ostream &operator<<(std::ostream &os, vec3 const &v) {
 
 // My Useful Globals
 MGLpoly_mode currentDrawingMode;
+MGLint currentColor = 0;
 int W = 320;
 int H = 240;
+
 //vec3 gloablVertexList[1000];
 list<vec3> gloablVertexList;
 
-MGLpixel currentPixelFramebuffer[320*240];
+MGLpixel currentPixelBitmap[320*240];
+// pixel (x,y) maps to element [(y*width) + x]
 
 
 /**
@@ -68,9 +76,20 @@ MGLpixel currentPixelFramebuffer[320*240];
  * the two-dimensional screen.
  */
 void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
+    W = width;
+    H = height;
+    /* Fill Screen With Red Test
+    for (int x = 0; x < width; ++x) {
+        for (int y =0; y < height; ++y) {
+            currentPixelBitmap[(y*width) + x] = Make_Pixel(255, 0, 0);
+        }
+    }
+    */
     
-    currentPixelFramebuffer[0] = 1;
-    copy(currentPixelFramebuffer, currentPixelFramebuffer+(W*H), data);
+    
+    
+    
+    copy(currentPixelBitmap, currentPixelBitmap+(W*H), data);
     
 }
 
@@ -100,13 +119,49 @@ void mglBegin(MGLpoly_mode mode){
 void mglEnd(){
     switch (currentDrawingMode) {
         case MGL_TRIANGLES:
+        { // have to classify a scope to initialize var in case statement
             cout << "Triangles End" << endl;
+            // set all vertices or rasterize triangles here
             
-            break;
+            // test for triangle and only draw n/3 ignoring extra vertices
+            
+            int numOfTrianglesToDraw = (int)gloablVertexList.size()/3;
+            
+            // draw seperating line test and x and y axis
+            
+            // seperating line and y axis
+            for (int c = 0; c < H; c++) {
+                currentPixelBitmap[(c*W)] = currentColor;
+                //currentPixelBitmap[(c*W)+ W/2] = currentColor;
+            }
+            // draw x axis
+            for (int c = 0; c < W; c++) {
+                //currentPixelBitmap[(H/2 * W) + c] = currentColor;
+            }
+            // center point
+            currentPixelBitmap[(int)(roundf((H/2 * W) + roundf(W/2)))] = currentColor;
+            
+            
+            for(int i=0; i < numOfTrianglesToDraw; i++){
+                // vert 1
+                for (int j = 0; j < 3; j++) {
+                    currentPixelBitmap[(int)(roundf(((gloablVertexList.front().y + H/2) * W))  + roundf(gloablVertexList.front().x)+W/2)] = currentColor;
+                    gloablVertexList.pop_front();
+                }
+                
+                
+            }
+            // clear any extra verticies
+            gloablVertexList.clear();
         
+            break;
+        }
+            
         case MGL_QUADS:
+        {// have to classify a scope to initialize var in case statement
             cout << "Quads End" << endl;
             break;
+        }
             
         default:
             break;
@@ -257,5 +312,5 @@ void mglOrtho(MGLfloat left, MGLfloat right, MGLfloat bottom, MGLfloat top, MGLf
  * Set the current color for drawn shapes.
  */
 void mglColor(MGLfloat red, MGLfloat green, MGLfloat blue){
-    
+    currentColor = Make_Pixel(red*255, green*255, blue*255);
 }
