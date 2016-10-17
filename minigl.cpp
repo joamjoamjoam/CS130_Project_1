@@ -21,12 +21,6 @@
 
 using namespace std;
 
-/*
- To Do list 
- 1. plot verticies correctly by apping pixel locations to an xy coordinate system eg 10 pixels wide = 1 x unit
- 
-*/
-
 /**
  * Standard macro to report errors
  */
@@ -34,15 +28,36 @@ inline void MGL_ERROR(const char* description) {
     printf("%s\n", description);
     exit(1);
 }
+
+
+
+/*
+ To Do list
+ 1. implent general case for triangle raster
+ 
+ 
+*/
+
+
+// classes and functions
+class pixelVec3{
+public:
+    MGLint x;
+    MGLint y;
+};
+
 class vec3{
 public:
     MGLfloat x;
     MGLfloat y;
     MGLfloat z;
-    
-private:
-    
 };
+void rasterizeTriangles();
+void drawCoodSystem();
+pixelVec3 pixelCoordForXCoordinate(float pointX, float pointY);
+bool wayToSort(vec3 i, vec3 j) { return i.y > j.y; }
+void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3);
+void rasterizeFlatTopTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3);
 
 std::ostream &operator<<(std::ostream &os, vec3 const &v) {
     return os << "V(x,y,z) = (" << v.x << "," << v.y << "," << v.z << ")";
@@ -55,12 +70,12 @@ MGLpoly_mode currentDrawingMode;
 MGLint currentColor = 0;
 int W = 320;
 int H = 240;
-
-//vec3 gloablVertexList[1000];
 list<vec3> gloablVertexList;
-
 MGLpixel currentPixelBitmap[320*240];
 // pixel (x,y) maps to element [(y*width) + x]
+
+
+
 
 
 /**
@@ -85,10 +100,6 @@ void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
         }
     }
     */
-    
-    
-    
-    
     copy(currentPixelBitmap, currentPixelBitmap+(W*H), data);
     
 }
@@ -102,12 +113,12 @@ void mglReadPixels(MGLsize width, MGLsize height, MGLpixel *data){
 void mglBegin(MGLpoly_mode mode){
     switch (mode){
         case MGL_TRIANGLES:
-            cout << "Triangle Mode" << endl;
+            //cout << "Triangle Mode" << endl;
             // expect to start drawing a triangle
             currentDrawingMode = MGL_TRIANGLES;
             break;
         case MGL_QUADS:
-            cout << "Quads Mode"  << endl;
+            //cout << "Quads Mode"  << endl;
             currentDrawingMode = MGL_QUADS;
     }
 }
@@ -119,53 +130,74 @@ void mglBegin(MGLpoly_mode mode){
 void mglEnd(){
     switch (currentDrawingMode) {
         case MGL_TRIANGLES:
-        { // have to classify a scope to initialize var in case statement
-            cout << "Triangles End" << endl;
-            // set all vertices or rasterize triangles here
-            
-            // test for triangle and only draw n/3 ignoring extra vertices
-            
-            int numOfTrianglesToDraw = (int)gloablVertexList.size()/3;
-            
-            // draw seperating line test and x and y axis
-            
-            // seperating line and y axis
-            for (int c = 0; c < H; c++) {
-                currentPixelBitmap[(c*W)] = currentColor;
-                //currentPixelBitmap[(c*W)+ W/2] = currentColor;
-            }
-            // draw x axis
-            for (int c = 0; c < W; c++) {
-                //currentPixelBitmap[(H/2 * W) + c] = currentColor;
-            }
-            // center point
-            currentPixelBitmap[(int)(roundf((H/2 * W) + roundf(W/2)))] = currentColor;
-            
-            
-            for(int i=0; i < numOfTrianglesToDraw; i++){
-                // vert 1
-                for (int j = 0; j < 3; j++) {
-                    currentPixelBitmap[(int)(roundf(((gloablVertexList.front().y + H/2) * W))  + roundf(gloablVertexList.front().x)+W/2)] = currentColor;
-                    gloablVertexList.pop_front();
-                }
-                
-                
-            }
-            // clear any extra verticies
-            gloablVertexList.clear();
-        
+            // have to classify a scope to initialize var in case statement
+            //cout << "Triangles End" << endl;
+            rasterizeTriangles();
             break;
-        }
             
         case MGL_QUADS:
         {// have to classify a scope to initialize var in case statement
-            cout << "Quads End" << endl;
+            //cout << "Quads End" << endl;
             break;
         }
             
         default:
             break;
     }
+}
+void rasterizeTriangles(){
+    
+    // fill screen black first
+    for (int x = 0; x < W; ++x) {
+        for (int y =0; y < H; ++y) {
+            currentPixelBitmap[(y*W) + x] = Make_Pixel(0, 0, 0);
+        }
+    }
+    
+    
+    
+    //drawCoodSystem();
+    int numOfTrianglesToDraw = (int)gloablVertexList.size()/3;
+    
+    
+    
+    
+    // rasterize triangles
+    for (int i = 0; i < numOfTrianglesToDraw; i++) {
+        vec3 triangle[3];
+        
+        triangle[0] = gloablVertexList.front();
+        gloablVertexList.pop_front();
+        triangle[1] = gloablVertexList.front();
+        gloablVertexList.pop_front();
+        triangle[2] = gloablVertexList.front();
+        gloablVertexList.pop_front();
+        
+        sort(triangle, triangle + 3, wayToSort);
+        
+        pixelVec3 v1 = pixelCoordForXCoordinate(triangle[0].x, triangle[0].y);
+        pixelVec3 v2 = pixelCoordForXCoordinate(triangle[1].x, triangle[1].y);
+        pixelVec3 v3 = pixelCoordForXCoordinate(triangle[2].x, triangle[2].y);
+        
+        if (triangle[2].y == triangle[1].y) {
+            // flat bottom triangle
+            rasterizeFlatBottomTriangle(v1, v2, v3);
+            
+        }
+        else if (triangle[0].y == triangle[1].y) {
+            // flat top triangle
+            rasterizeFlatTopTriangle(v1, v2, v3);
+        }
+        else{
+            // other triangles
+            cout << "Other Triangle Detected" << endl;
+            
+            
+        }
+        
+    }
+    // clear any extra verticies
+    gloablVertexList.clear();
 }
 
 
@@ -185,7 +217,7 @@ void mglVertex2(MGLfloat x, MGLfloat y){
     
     
     
-    cout << "Vector " << gloablVertexList.back() << "was added." << endl;
+    //cout << "Vector " << gloablVertexList.back() << "was added." << endl;
 }
 
 /**
@@ -202,7 +234,7 @@ void mglVertex3(MGLfloat x, MGLfloat y, MGLfloat z){
     
     
     
-    cout << "Vector " << gloablVertexList.back() << "was added." << endl;
+    //cout << "Vector " << gloablVertexList.back() << "was added." << endl;
 }
 
 /**
@@ -314,3 +346,80 @@ void mglOrtho(MGLfloat left, MGLfloat right, MGLfloat bottom, MGLfloat top, MGLf
 void mglColor(MGLfloat red, MGLfloat green, MGLfloat blue){
     currentColor = Make_Pixel(red*255, green*255, blue*255);
 }
+///////////////////////////////////////////////////////////////////////////
+//My Functions
+
+pixelVec3 pixelCoordForXCoordinate(float pointX, float pointY){
+    pixelVec3 convertedPixelCoord;
+    
+    convertedPixelCoord.x = (int) roundf((W/2 * pointX) + W/2);
+    convertedPixelCoord.y = (int) roundf((H/2 * pointY) + H/2);
+    
+    return convertedPixelCoord;
+}
+
+void drawCoodSystem(){
+    // draw seperating line test and x and y axis
+    // seperating line and y axis
+    for (int c = 0; c < H; c++) {
+        currentPixelBitmap[(c*W)] = currentColor;
+        currentPixelBitmap[(c*W)+ W/2] = currentColor;
+    }
+    // draw x axis
+    for (int c = 0; c < W; c++) {
+        currentPixelBitmap[(H/2 * W) + c] = currentColor;
+    }
+    // center point
+    currentPixelBitmap[(int)(roundf((H/2 * W) + roundf(W/2)))] = currentColor;
+}
+
+void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
+    //cout << "Flat Bottom Triangle Detected" << endl;
+    
+    
+    float m1 = (v2.x - v1.x)/(v2.y - v1.y);
+    float m2 = (v3.x - v1.x)/(v3.y - v1.y);
+    
+    float pointOnLine1 = v1.x;
+    float pointOnLine2 = v1.x;
+    
+    
+    
+    
+    for (int i = v1.y; i > v3.y; i--) {
+        //cout << "in for" << endl;
+        // draw line
+        for (int j = pointOnLine1; j < pointOnLine2; j++) {
+            currentPixelBitmap[(i * W) + j] = currentColor;
+        }
+        
+        pointOnLine1 -= m1;
+        pointOnLine2 -= m2;
+        
+    }
+}
+
+void rasterizeFlatTopTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
+    //cout << "Flat Bottom Triangle Detected" << endl;
+    float m1 = (v3.x - v1.x)/(v3.y - v1.y);
+    float m2 = (v3.x - v2.x)/(v3.y - v2.y);
+    
+    float pointOnLine1 = v3.x;
+    float pointOnLine2 = v3.x;
+    
+    
+    
+    
+    for (int i = v3.y; i <= v1.y; i++) {
+        //cout << "in for" << endl;
+        // draw line
+        for (int j = pointOnLine1; j <= pointOnLine2; j++) {
+            currentPixelBitmap[(i * W) + j] = currentColor;
+        }
+        
+        pointOnLine1 += m1;
+        pointOnLine2 += m2;
+        
+    }
+}
+

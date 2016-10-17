@@ -90,7 +90,7 @@ void Execute_Commands()
     mglReadPixels(width,height,pixel_data);
     
     // my code erase this
-    std::cout << "Pixel Data 0 is " << pixel_data[0] << std::endl;
+    //std::cout << "Pixel Data 0 is " << pixel_data[0] << std::endl;
 
    //----------------------------------------------------------------------
     
