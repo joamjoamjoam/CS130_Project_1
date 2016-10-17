@@ -65,6 +65,7 @@ std::ostream &operator<<(std::ostream &os, vec3 const &v) {
 
 
 
+
 // My Useful Globals
 MGLpoly_mode currentDrawingMode;
 MGLint currentColor = 0;
