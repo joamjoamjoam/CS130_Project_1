@@ -42,8 +42,8 @@ inline void MGL_ERROR(const char* description) {
 // classes and functions
 class pixelVec3{
 public:
-    MGLint x;
-    MGLint y;
+    MGLfloat x;
+    MGLfloat y;
 };
 
 class vec3{
@@ -175,9 +175,13 @@ void rasterizeTriangles(){
         
         sort(triangle, triangle + 3, wayToSort);
         
+        cout << triangle[1].x << ", " << triangle[1].y << endl;
         pixelVec3 v1 = pixelCoordForXCoordinate(triangle[0].x, triangle[0].y);
         pixelVec3 v2 = pixelCoordForXCoordinate(triangle[1].x, triangle[1].y);
         pixelVec3 v3 = pixelCoordForXCoordinate(triangle[2].x, triangle[2].y);
+        
+        
+        cout << v2.x << ", " << v2.y <<  endl;
         
         if (triangle[2].y == triangle[1].y) {
             // flat bottom triangle
@@ -383,20 +387,26 @@ void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
     float pointOnLine1 = v1.x;
     float pointOnLine2 = v1.x;
     
+    cout << "m1 = " << m1 << ", m2 = " << m2 << endl;
     
     
     
     for (int i = v1.y; i > v3.y; i--) {
         //cout << "in for" << endl;
         // draw line
-        for (int j = pointOnLine1; j < pointOnLine2; j++) {
-            currentPixelBitmap[(i * W) + j] = currentColor;
+        for (float j = pointOnLine1; j < pointOnLine2; j++) {
+            currentPixelBitmap[(int) roundf((i * W) + j)] = currentColor;
         }
         
         pointOnLine1 -= m1;
         pointOnLine2 -= m2;
         
     }
+    //test verts
+    
+    currentPixelBitmap[(int)roundf((v1.y * W) + v1.x)] = currentColor;
+    currentPixelBitmap[(int)roundf((v2.y * W) + v2.x)] = currentColor;
+    currentPixelBitmap[(int)roundf((v3.y * W) + v3.x)] = currentColor;
 }
 
 void rasterizeFlatTopTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
