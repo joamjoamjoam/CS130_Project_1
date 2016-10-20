@@ -18,8 +18,139 @@
 #include <vector>
 #include <list>
 #include <cstdio>
-
 using namespace std;
+
+// Instructor Includes
+
+//Vec3.h
+
+#ifndef __vec__
+#define __vec__
+
+#include <cmath>
+#include <iostream>
+#include <cassert>
+
+template<class T, int n> struct vec;
+template<class T, int n> T dot(const vec<T,n>& u,const vec<T,n>& v);
+
+template<class T, int n>
+struct vec
+{
+    T x[n];
+    
+    vec()
+    {make_zero();}
+    
+    vec(const T& a)
+    {assert(n == 1);x[0]=a;}
+    
+    vec(const T& a, const T& b)
+    {assert(n == 2);x[0]=a;x[1]=b;}
+    
+    vec(const T& a, const T& b, const T& c)
+    {assert(n == 3);x[0]=a;x[1]=b;x[2]=c;}
+    
+    void make_zero()
+    {for(int i = 0; i < n; i++) x[i] = 0;}
+    
+    vec& operator += (const vec& v)
+    {for(int i = 0; i < n; i++) x[i] += v.x[i]; return *this;}
+    
+    vec& operator -= (const vec& v)
+    {for(int i = 0; i < n; i++) x[i] -= v.x[i]; return *this;}
+    
+    vec& operator *= (const vec& v)
+    {for(int i = 0; i < n; i++) x[i] *= v.x[i]; return *this;}
+    
+    vec& operator /= (const vec& v)
+    {for(int i = 0; i < n; i++) x[i] /= v.x[i]; return *this;}
+    
+    vec& operator *= (const T& c)
+    {for(int i = 0; i < n; i++) x[i] *= c; return *this;}
+    
+    vec& operator /= (const T& c)
+    {for(int i = 0; i < n; i++) x[i] /= c; return *this;}
+    
+    vec operator + () const
+    {return *this;}
+    
+    vec operator - () const
+    {vec r; for(int i = 0; i < n; i++) r[i] = -x[i]; return r;}
+    
+    vec operator + (const vec& v) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] + v.x[i]; return r;}
+    
+    vec operator - (const vec& v) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] - v.x[i]; return r;}
+    
+    vec operator * (const vec& v) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] * v.x[i]; return r;}
+    
+    vec operator / (const vec& v) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] / v.x[i]; return r;}
+    
+    vec operator * (const T& c) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] * c; return r;}
+    
+    vec operator / (const T& c) const
+    {vec r; for(int i = 0; i < n; i++) r[i] = x[i] / c; return r;}
+    
+    const T& operator[] (int i) const
+    {return x[i];}
+    
+    T& operator[] (int i)
+    {return x[i];}
+    
+    T magnitude_squared() const
+    {return dot(*this, *this);}
+    
+    T magnitude() const
+    {return sqrt(magnitude_squared());}
+    
+    // Be careful to handle the zero vector gracefully
+    vec normalized() const
+    {T mag = magnitude(); if(mag) return *this / mag; vec r; r[0] = 1; return r;};
+};
+
+template <class T, int n>
+vec<T,n> operator * (const T& c, const vec<T,n>& v)
+{return v*c;}
+
+template <class T, int n>
+T dot(const vec<T,n> & u, const vec<T,n> & v)
+{
+    T r  =  0;
+    for(int i = 0; i < n; i++) r += u.x[i] * v.x[i];
+    return r;
+}
+
+template <class T >
+vec<T,3> cross(const vec<T,3> & u, const vec<T,3> & v)
+{
+    return vec<T,3> (
+                     u[1] * v[2] - u[2] * v[1],
+                     u[2] * v[0] - u[0] * v[2],
+                     u[0] * v[1] - u[1] * v[0]);
+}
+
+template <class T, int n>
+std::ostream& operator << (std::ostream& out, const vec<T,n> & u)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if(i) out << ' ';
+        out << u[i];
+    }
+    return out;
+}
+
+typedef vec<float,2> vec2;
+typedef vec<float,3> vec3;
+typedef vec<int,2> ivec2;
+typedef vec<float,3> pixelVec3;
+
+#endif
 
 /**
  * Standard macro to report errors
@@ -40,27 +171,17 @@ inline void MGL_ERROR(const char* description) {
 
 
 // classes and functions
-class pixelVec3{
-public:
-    MGLfloat x;
-    MGLfloat y;
-};
 
-class vec3{
-public:
-    MGLfloat x;
-    MGLfloat y;
-    MGLfloat z;
-};
+
 void rasterizeTriangles();
 void drawCoodSystem();
 pixelVec3 pixelCoordForXCoordinate(float pointX, float pointY);
-bool wayToSort(vec3 i, vec3 j) { return i.y > j.y; }
+bool wayToSort(vec3 i, vec3 j) { return i[1] > j[1]; }
 void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3);
 void rasterizeFlatTopTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3);
 
 std::ostream &operator<<(std::ostream &os, vec3 const &v) {
-    return os << "V(x,y,z) = (" << v.x << "," << v.y << "," << v.z << ")";
+    return os << "V(x,y,z) = (" << v[0] << "," << v[1] << "," << v[2] << ")";
 }
 
 
@@ -68,11 +189,16 @@ std::ostream &operator<<(std::ostream &os, vec3 const &v) {
 
 // My Useful Globals
 MGLpoly_mode currentDrawingMode;
+MGLmatrix_mode currentMatrixMode;
 MGLint currentColor = 0;
 int W = 320;
 int H = 240;
 list<vec3> gloablVertexList;
 MGLpixel currentPixelBitmap[320*240];
+MGLfloat currentModelViewMatrix[4][4];
+MGLfloat currentProjectionMatrix[4][4];
+MGLfloat currentUserSetMatrix[4][4];
+
 // pixel (x,y) maps to element [(y*width) + x]
 
 
@@ -165,7 +291,7 @@ void rasterizeTriangles(){
     
     // rasterize triangles
     for (int i = 0; i < numOfTrianglesToDraw; i++) {
-        vec3 triangle[3];
+        vec3 triangle[4];
         
         triangle[0] = gloablVertexList.front();
         gloablVertexList.pop_front();
@@ -176,20 +302,20 @@ void rasterizeTriangles(){
         
         sort(triangle, triangle + 3, wayToSort);
         
-        cout << triangle[1].x << ", " << triangle[1].y << endl;
-        pixelVec3 v1 = pixelCoordForXCoordinate(triangle[0].x, triangle[0].y);
-        pixelVec3 v2 = pixelCoordForXCoordinate(triangle[1].x, triangle[1].y);
-        pixelVec3 v3 = pixelCoordForXCoordinate(triangle[2].x, triangle[2].y);
+        //cout << triangle[1].x << ", " << triangle[1].y << endl;
+        pixelVec3 v1 = pixelCoordForXCoordinate(triangle[0][0], triangle[0][1]);
+        pixelVec3 v2 = pixelCoordForXCoordinate(triangle[1][0], triangle[1][1]);
+        pixelVec3 v3 = pixelCoordForXCoordinate(triangle[2][0], triangle[2][1]);
         
         
-        cout << v2.x << ", " << v2.y <<  endl;
+        //cout << v2.x << ", " << v2.y <<  endl;
         
-        if (triangle[2].y == triangle[1].y) {
+        if (triangle[2][1] == triangle[1][1]) {
             // flat bottom triangle
             rasterizeFlatBottomTriangle(v1, v2, v3);
             
         }
-        else if (triangle[0].y == triangle[1].y) {
+        else if (triangle[0][1] == triangle[1][1]) {
             // flat top triangle
             rasterizeFlatTopTriangle(v1, v2, v3);
         }
@@ -197,6 +323,17 @@ void rasterizeTriangles(){
             // other triangles
             cout << "Other Triangle Detected" << endl;
             
+            // split triangle up into two flat top or bottom triangles
+            vec3 tmpV4;
+            tmpV4[0] = triangle[0][0] + (((triangle[1][1] - triangle[0][1])/(triangle[2][1] - triangle[0][1])) * (triangle[2][0] - triangle[0][0]));
+            tmpV4[1] = triangle[1][1];
+            triangle[3] = tmpV4;
+            sort(triangle, triangle + 4, wayToSort);
+            
+            pixelVec3 v4 = pixelCoordForXCoordinate(tmpV4[0], tmpV4[1]);
+            
+            rasterizeFlatBottomTriangle(v1, v2, v4);
+            rasterizeFlatTopTriangle(v2, v4, v3);
             
         }
         
@@ -215,12 +352,10 @@ void rasterizeTriangles(){
 void mglVertex2(MGLfloat x, MGLfloat y){
     // should just add a vertex to global list here
     vec3 tmp;
-    tmp.x = x;
-    tmp.y = y;
-    tmp.z = 0;
+    tmp[0] = x;
+    tmp[1] = y;
+    tmp[2] = 0;
     gloablVertexList.push_back(tmp);
-    
-    
     
     //cout << "Vector " << gloablVertexList.back() << "was added." << endl;
 }
@@ -232,9 +367,9 @@ void mglVertex2(MGLfloat x, MGLfloat y){
 void mglVertex3(MGLfloat x, MGLfloat y, MGLfloat z){
     // should just add a vertex to global list here
     vec3 tmp;
-    tmp.x = x;
-    tmp.y = y;
-    tmp.z = z;
+    tmp[0] = x;
+    tmp[1] = y;
+    tmp[2] = z;
     gloablVertexList.push_back(tmp);
     
     
@@ -246,7 +381,7 @@ void mglVertex3(MGLfloat x, MGLfloat y, MGLfloat z){
  * Set the current matrix mode (modelview or projection).
  */
 void mglMatrixMode(MGLmatrix_mode mode){
-    
+    currentMatrixMode = mode;
 }
 
 /**
@@ -254,7 +389,15 @@ void mglMatrixMode(MGLmatrix_mode mode){
  * current matrix mode.
  */
 void mglPushMatrix(){
-    
+    if (currentMatrixMode == MGL_PROJECTION){
+        //currentProjectionMatrix = currentUserSetMarix;
+    }
+    else if (currentMatrixMode == MGL_MODELVIEW){
+        //*currentModelViewMatrix = *currentUserSetMatrix;
+    }
+    else{
+        // nothing
+    }
 }
 
 /**
@@ -351,14 +494,21 @@ void mglOrtho(MGLfloat left, MGLfloat right, MGLfloat bottom, MGLfloat top, MGLf
 void mglColor(MGLfloat red, MGLfloat green, MGLfloat blue){
     currentColor = Make_Pixel(red*255, green*255, blue*255);
 }
+
+
+
+
+
+
+#pragma mark My Helper Functions
 ///////////////////////////////////////////////////////////////////////////
 //My Functions
 
 pixelVec3 pixelCoordForXCoordinate(float pointX, float pointY){
     pixelVec3 convertedPixelCoord;
     
-    convertedPixelCoord.x = (int) roundf((W/2 * pointX) + W/2);
-    convertedPixelCoord.y = (int) roundf((H/2 * pointY) + H/2);
+    convertedPixelCoord[0] = (int) roundf((W/2 * pointX) + W/2);
+    convertedPixelCoord[1] = (int) roundf((H/2 * pointY) + H/2);
     
     return convertedPixelCoord;
 }
@@ -382,17 +532,17 @@ void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
     //cout << "Flat Bottom Triangle Detected" << endl;
     
     
-    float m1 = (v2.x - v1.x)/(v2.y - v1.y);
-    float m2 = (v3.x - v1.x)/(v3.y - v1.y);
+    float m1 = (v2[0] - v1[0])/(v2[1] - v1[1]);
+    float m2 = (v3[0] - v1[0])/(v3[1] - v1[1]);
     
-    float pointOnLine1 = v1.x;
-    float pointOnLine2 = v1.x;
+    float pointOnLine1 = v1[0];
+    float pointOnLine2 = v1[0];
     
-    cout << "m1 = " << m1 << ", m2 = " << m2 << endl;
+    //cout << "m1 = " << m1 << ", m2 = " << m2 << endl;
     
     
     
-    for (int i = v1.y; i > v3.y; i--) {
+    for (int i = v1[1]; i > v3[1]; i--) {
         //cout << "in for" << endl;
         // draw line
         for (float j = pointOnLine1; j < pointOnLine2; j++) {
@@ -405,23 +555,23 @@ void rasterizeFlatBottomTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
     }
     //test verts
     
-    currentPixelBitmap[(int)roundf((v1.y * W) + v1.x)] = currentColor;
-    currentPixelBitmap[(int)roundf((v2.y * W) + v2.x)] = currentColor;
-    currentPixelBitmap[(int)roundf((v3.y * W) + v3.x)] = currentColor;
+    currentPixelBitmap[(int)roundf((v1[1] * W) + v1[0])] = currentColor;
+    currentPixelBitmap[(int)roundf((v2[1] * W) + v2[0])] = currentColor;
+    currentPixelBitmap[(int)roundf((v3[1] * W) + v3[0])] = currentColor;
 }
 
 void rasterizeFlatTopTriangle(pixelVec3 v1, pixelVec3 v2, pixelVec3 v3){
     //cout << "Flat Bottom Triangle Detected" << endl;
-    float m1 = (v3.x - v1.x)/(v3.y - v1.y);
-    float m2 = (v3.x - v2.x)/(v3.y - v2.y);
+    float m1 = (v3[0] - v1[0])/(v3[1] - v1[1]);
+    float m2 = (v3[0] - v2[0])/(v3[1] - v2[1]);
     
-    float pointOnLine1 = v3.x;
-    float pointOnLine2 = v3.x;
-    
-    
+    float pointOnLine1 = v3[0];
+    float pointOnLine2 = v3[0];
     
     
-    for (int i = v3.y; i <= v1.y; i++) {
+    
+    
+    for (int i = v3[1]; i <= v1[1]; i++) {
         //cout << "in for" << endl;
         // draw line
         for (int j = pointOnLine1; j <= pointOnLine2; j++) {
